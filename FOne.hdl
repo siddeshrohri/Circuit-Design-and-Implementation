@@ -1,0 +1,30 @@
+CHIP FOne
+
+{
+
+    //According to the specifications provided
+
+    //We take four inputs 
+
+    IN A,B,C,D;
+
+    //We have two outputs to which we evaluate the input values
+
+    OUT F,G;
+
+    PARTS:
+
+    //According to the minimized expression we get A AND C
+
+    //Storing the output in F
+
+    And(a=A, b=C, out=F);
+
+    //According to the minimized expression we get B AND D
+
+    //Storing the output in G
+
+    And(a=B, b=D, out=G);
+
+
+}

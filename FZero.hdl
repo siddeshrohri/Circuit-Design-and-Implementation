@@ -1,0 +1,30 @@
+CHIP FZero
+
+{
+
+    //According to the specifications provided
+
+    //We take four inputs 
+
+    IN A,B,C,D;
+
+    //We have two outputs to which we evaluate the input values
+
+    OUT F,G;
+
+    PARTS:
+
+    //According to the minimized expression we get NOT C
+
+    //Storing the output in F
+
+    Not(in = C, out=F);
+
+    //According to the minimized expression we get NOT C
+
+    //Storing the output in G
+
+    Not(in = D, out=G);
+
+
+}

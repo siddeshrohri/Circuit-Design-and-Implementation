@@ -1,0 +1,97 @@
+CHIP FThree
+
+{
+
+    //According to the specifications provided
+
+    //We take four inputs
+
+    IN A,B,C,D;
+
+    //We have three outputs to which we evaluate the input values
+
+    OUT E,F,G;
+
+    PARTS:
+
+    //According to the minimized expression we get (A AND C) OR (A AND B AND D) OR (A AND C AND D)
+
+    //Storing the output in E
+
+    And(a= A, b= C, out = ans1);
+
+    And(a = A, b= B, out = combine1);
+
+    And(a = combine1, b= D, out = ans2);
+
+    And(a =B, b= C, out= combine2);
+
+    And(a= combine2, b= D, out= ans3);
+
+    Or(a= ans1, b= ans2, out= final1);
+
+    Or(a =final1, b= ans3, out=E);
+
+
+
+    //Storing the output output of the minimized expression in F
+
+    Not(in= A, out=notA);
+
+    Not(in= B, out=notB);
+
+    Not(in= C, out=notC);
+
+    Not(in= D, out=notD);
+
+    And(a= A, b= notC, out= combine3);
+
+    And(a= combine3, b=notD, out= ans4);
+
+    And(a= A, b= notB, out= combine4);
+
+    And(a= combine4, b=notC, out= ans5);
+
+    And(a= notA, b= B, out= combine5);
+
+    And(a= notC, b=D, out= combine6);
+
+    And(a= combine5, b= combine6, out= ans6);
+
+    And(a= A, b=B, out= combine7);
+
+    And(a= C, b= D, out= combine8);
+
+    And(a= combine7, b=combine8, out= ans7);
+
+    And(a= notA, b= notB, out= combine9);
+
+    And(a= combine9, b=C, out= ans8);
+
+    And(a= notA, b= C, out= combine10);
+
+    And(a= combine10, b=notD, out= ans9);
+
+    Or(a= ans4, b= ans5, out= final2);
+
+    Or(a =ans6, b= ans7, out=final3);
+
+    Or(a= ans8, b= ans9, out= final4);
+
+    Or(a =final2, b= final3, out=final5);
+
+    Or(a=final4, b=final5, out=F);
+
+
+    //According to the minimized expression we get (B AND NOT(D)) OR (NOT(B) AND D)
+
+    //Storing the output in G
+
+    And(a= B, b= notD, out= combine11);
+
+    And(a= notB, b=D, out= combine12);
+
+    Or(a= combine11, b= combine12, out= G);
+
+
+}

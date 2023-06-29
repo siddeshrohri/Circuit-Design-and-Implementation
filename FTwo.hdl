@@ -1,0 +1,30 @@
+CHIP FTwo
+
+{
+
+    //According to the specifications provided
+
+    //We take four inputs
+
+    IN A,B,C,D;
+
+    //We have two outputs to which we evaluate the input values
+
+    OUT F,G;
+
+    PARTS:
+
+    //According to the minimized expression we get A OR C
+
+    //Storing the output in F
+
+    Or(a= A, b= C, out= F);
+
+    //According to the minimized expression we get B OR D
+
+    //Storing the output in G
+
+    Or(a= B, b= D, out= G);
+
+
+}

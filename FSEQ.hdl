@@ -1,0 +1,235 @@
+CHIP FSEQ 
+
+{
+
+    //According to the specifications provided
+
+    //We take six inputs
+
+    IN A,B,C,D,f0,f1,load;
+
+    //We have three outputs to which we evaluate the input values
+
+    OUT E,F,G;
+
+    PARTS:
+
+    
+
+    //CHIP FZero
+
+    //According to the minimized expression we get NOT C
+
+    //Storing the output in F-zero
+
+    Not(in  = C, out =  F-zero);
+
+    //According to the minimized expression we get NOT C
+
+    //Storing the output in G-zero
+
+    Not(in  = D, out =  G-zero);
+
+
+
+
+
+    //CHIP FOne
+
+    //According to the minimized expression we get A AND C
+
+    //Storing the output in Fone
+
+    And(a  = A, b  = C, out =  F-one);
+
+    //According to the minimized expression we get B AND D
+
+    //Storing the output in Gone
+
+    And(a  = B, b  = D, out =  G-one);
+    
+
+
+
+
+    //CHIP FTwo
+
+    //According to the minimized expression we get A OR C
+
+    //Storing the output in F-two
+
+    Or(a  = A, b  = C, out =  F-two);
+
+    //According to the minimized expression we get B OR D
+
+    //Storing the output in G-two
+
+    Or(a  = B, b  = D, out =  G-two);
+
+
+
+
+
+
+    //CHIP FThree
+
+    //According to the minimized expression we get (A AND C) OR (A AND B AND D) OR (A AND C AND D)
+
+    //Storing the output in E-three
+
+    And(a  = A, b  = C, out =  ans1);
+
+    And(a  = A, b  = B, out =  combine1);
+
+    And(a  = combine1, b  = D, out =  ans2);
+
+    And(a  = B, b  = C, out =  combine2);
+
+    And(a  = combine2, b  = D, out =  ans3);
+
+    Or(a  = ans1, b  = ans2, out =  final1);
+
+    Or(a  = final1, b  = ans3, out =  E-three);
+
+
+
+
+    //Storing the output output of the minimized expression in F-three
+
+    Not(in  = A, out =  notA);
+
+    Not(in  = B, out =  notB);
+
+    Not(in  = C, out =  notC);
+
+    Not(in  = D, out =  notD);
+
+    And(a  = A, b  = notC, out =  combine3);
+
+    And(a  = combine3, b  = notD, out =  ans4);
+
+    And(a  = A, b  = notB, out =  combine4);
+
+    And(a  = combine4, b  = notC, out =  ans5);
+
+    And(a  = notA, b  = B, out =  combine5);
+
+    And(a  = notC, b  = D, out =  combine6);
+
+    And(a  = combine5, b  = combine6, out =  ans6);
+
+    And(a  = A, b  = B, out =  combine7);
+
+    And(a  = C, b  = D, out =  combine8);
+
+    And(a  = combine7, b  = combine8, out =  ans7);
+
+    And(a  = notA, b  = notB, out =  combine9);
+
+    And(a  = combine9, b  = C, out =  ans8);
+
+    And(a  = notA, b  = C, out =  combine10);
+
+    And(a  = combine10, b  = notD, out =  ans9);
+
+    Or(a  = ans4, b  = ans5, out =  final2);
+
+    Or(a  = ans6, b  = ans7, out =  final3);
+
+    Or(a  = ans8, b =  ans9, out =  final4);
+
+    Or(a  = final2, b  = final3, out =  final5);
+
+    Or(a  = final4, b  = final5, out =  F-three);
+
+
+    
+
+    //According to the minimized expression we get (B AND NOT(D)) OR (NOT(B) AND D)
+
+    //Storing the output in G-three
+
+    And(a= B, b= notD, out= combine11);
+
+    And(a= notB, b=D, out= combine12);
+
+    Or(a= combine11, b= combine12, out= G-three);
+
+
+
+
+
+
+    //Using the MUX chip to execute the code for the FALL CHIP
+    
+    //Final output value is stored in the variable evaluate
+
+    //Selector used in the first MUX is f1 with the input value being f1
+    
+    Mux(a=f1, b=E-three, sel=f1, out=final-out);
+
+    //Selector used in the second MUX is f0 with the input value being f0
+
+    Mux(a=f0, b=final-out, sel=f0, out=E-out);
+
+
+    
+
+
+    //Using the MUX chip to execute the code for the FALL CHIP
+
+    //First step is to select between the values of which chip to use depending on the value of f1
+
+    //Once the value is found it is stored in the output variable mux3
+
+    //Repeat the same step for the next value which stores it in output variable mux4
+
+    //Using the two output variables we create another mux which checks for the value of f0
+
+    //Stores the final output in the variable G
+
+    Mux(a=G-zero, b=G-two, sel=f1, out=mux3);
+
+    Mux(a=G-one, b=G-three, sel=f1, out=mux4);
+
+    Mux(a=mux3, b=mux4, sel=f0, out=G-out);
+
+
+
+
+    //Using the MUX chip to execute the code for the FALL CHIP
+
+    //First step is to select between the values of which chip to use depending on the value of f1
+
+    //Once the value is found it is stored in the output variable mux1
+
+    //Repeat the same step for the next value which stores it in output variable mux2
+
+    //Using the two output variables we create another mux which checks for the value of f0
+
+    //Stores the final output in the variable F
+
+    Mux(a=F-zero, b=F-two, sel=f1, out=mux1);
+
+    Mux(a=F-one, b=F-three, sel=f1, out=mux2);
+
+    Mux(a=mux1, b=mux2, sel=f0, out= F-out);
+
+
+    //DFF to pass the next value into the variable 
+
+    DFF(in  = G-out, out =  new-output1);
+
+
+    //DFF to pass the next value into the variable
+
+    DFF(in  = F-out, out =  new-output);
+
+    //Muxes for the new output and the input
+
+    Mux(a  = D, b  = new-output1, sel  = load, out =  G);
+
+    Mux(a  = C, b  = new-output, sel  = load, out =  F);
+
+
+}
