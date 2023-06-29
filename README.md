@@ -26,6 +26,4 @@ Task 4: Sequence of Operations
 
 Adapt the circuit from Task 3 to combine a sequence of operations based on different f1 and f0 values.
 Enable the outputs Ft and Gt to be used as the next inputs for Ct+1 and Dt+1.
-Add a new input (Load) that, when set to 1, allows loading inputs to Ct and Dt at the start and during the sequence if required.
-This adaptation should support expressions such as X+Y+Z or X-Y, where X, Y, and Z are all 2-bit binary numbers.
 Test the FSEQ chip using FSEQ.tst, but additional tests may be created before submission.
